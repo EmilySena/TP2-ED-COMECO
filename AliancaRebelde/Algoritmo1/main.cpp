@@ -10,7 +10,7 @@ void quickSort(vector<Civilizacao>&c, int low, int high);
 int partition (vector<Civilizacao>&c, int low, int high);
 int main() {
 
-   // clock_t start, end; 
+    clock_t start, end; 
     
     string n; //n->nome da civilizacao
     int d; //distancia da civilizacao
@@ -28,13 +28,13 @@ int main() {
         civilizacoes.push_back(c1);
     }
     
-    //start = clock();
+    start = clock();
     quickSort(civilizacoes, 0,num-1);
-    //end = clock(); 
+    end = clock(); 
     for (auto c : civilizacoes){
         c.Imprimir();
     }
-   // double time_taken = double(end - start) / double(CLOCKS_PER_SEC); 
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC); 
    /* cout << "Time taken by program is : " << fixed  
          << time_taken << setprecision(5); 
     cout << " sec " << endl; */
@@ -51,21 +51,35 @@ the pivot element at its correct position in sorted
 array, and places all smaller (smaller than pivot)  
 to left of pivot and all greater elements to right  
 of pivot */
-int partition (vector<Civilizacao>&c, int low, int high)  
-{  
+int partition (vector<Civilizacao>&c, int low, int high) {  
     Civilizacao pivot = c[high]; // pivot  
     int i = (low - 1); // Index of smaller element  
   
-    for (int j = low; j <= high - 1; j++)  
-    {  
+    for (int j = low; j <= high - 1; j++) {  
         // If current element is smaller than the pivot  
-        if (c[j].GetDistancia() < pivot.GetDistancia())  
-        {  
+        
+        if (c[j].GetDistancia() < pivot.GetDistancia()) {  
+            if(c[j].GetDistancia() == c[i].GetDistancia()){
+                if(c[j].GetPopulacao()<c[i].GetPopulacao()){
+                 swap(&c[j],&c[i]);
+                 }
+            }
             i++; // increment index of smaller element  
-            swap(&c[i], &c[j]);  
+            swap(&c[i], &c[j]);
+            if(c[j].GetDistancia() == c[i].GetDistancia()){
+                if(c[j].GetPopulacao()<c[i].GetPopulacao()){
+                 swap(&c[j],&c[i]);
+                 }
+            } 
+	
         }  
     }  
-    swap(&c[i + 1], &c[high]);  
+    swap(&c[i + 1], &c[high]);
+    if(c[i+1].GetDistancia() == c[high].GetDistancia()){
+            if(c[i+1].GetPopulacao()<c[high].GetPopulacao()){
+                swap(&c[i+1],&c[high]);
+            }
+    }  
     return (i + 1);  
 }  
   
