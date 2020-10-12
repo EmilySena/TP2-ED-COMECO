@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <bits/stdc++.h> 
 #include "Civilizacao.h"
 
 using namespace std;
@@ -9,16 +8,13 @@ void swap(Civilizacao *a, Civilizacao *b);
 void quickSort(vector<Civilizacao>&c, int low, int high);
 int partition (vector<Civilizacao>&c, int low, int high);
 int main() {
-
-    clock_t start, end; 
-    
     string n; //n->nome da civilizacao
     int d; //distancia da civilizacao
     int p; //populacao da civilizacao
     vector <Civilizacao> civilizacoes;
     int num{}; //num-> numero de civilizacoes
     cin>>num;
-    //lendo cada civilizacao e adicionando no vector 
+    //lendo cada civilizacao e adicionando no vector
     for(int i=0; i<num; ++i){
         Civilizacao c1;
         cin>>n>>d>>p;
@@ -27,78 +23,47 @@ int main() {
         c1.SetPopulacao(p);
         civilizacoes.push_back(c1);
     }
-    
-    start = clock();
     quickSort(civilizacoes, 0,num-1);
-    end = clock(); 
     for (auto c : civilizacoes){
         c.Imprimir();
     }
-    double time_taken = double(end - start) / double(CLOCKS_PER_SEC); 
-   /* cout << "Time taken by program is : " << fixed  
-         << time_taken << setprecision(5); 
-    cout << " sec " << endl; */
-
     return 0;
 }
-void swap(Civilizacao *a, Civilizacao *b){
+void swap(Civilizacao *a, Civilizacao *b){ //função de troca
     Civilizacao tmp = *a;
     *a = *b;
     *b = tmp;
 }
-/* This function takes last element as pivot, places  
-the pivot element at its correct position in sorted  
-array, and places all smaller (smaller than pivot)  
-to left of pivot and all greater elements to right  
-of pivot */
-int partition (vector<Civilizacao>&c, int low, int high) {  
-    Civilizacao pivot = c[high]; // pivot  
-    int i = (low - 1); // Index of smaller element  
-  
-    for (int j = low; j <= high - 1; j++) {  
-        // If current element is smaller than the pivot  
-        
-        if (c[j].GetDistancia() < pivot.GetDistancia()) {  
-            if(c[j].GetDistancia() == c[i].GetDistancia()){
-                if(c[j].GetPopulacao()<c[i].GetPopulacao()){
-                 swap(&c[j],&c[i]);
-                 }
-            }
-            i++; // increment index of smaller element  
+/* A função partition (partição) pega o ultimo elemento como pivot, coloca
+coloca o pivot na sua posição correta no vector ordenado, e coloca o elemento menor
+(menor que o pivot) à esquerda do pivot, e todos os elementos maiores ficam à
+direita do pivot */
+int partition (vector<Civilizacao>&c, int low, int high) {
+    Civilizacao pivot = c[high]; // pivot
+    int i = (low - 1); // index do menor elemento
+
+    for (int j = low; j <= high - 1; j++){
+        // se o elemento atual é menor que o pivot
+        if (c[j].GetDistancia() < pivot.GetDistancia()||(c[j].GetDistancia() == pivot.GetDistancia() && c[j].GetPopulacao()>pivot.GetPopulacao())){
+          //if para verificar a primeira chave(distancia), e no caso de ser igual, verificar a segunda(populacao)
+            i++; // incrementa o index do menor elemento
             swap(&c[i], &c[j]);
-            if(c[j].GetDistancia() == c[i].GetDistancia()){
-                if(c[j].GetPopulacao()<c[i].GetPopulacao()){
-                 swap(&c[j],&c[i]);
-                 }
-            } 
-	
-        }  
-    }  
+        }
+    }
     swap(&c[i + 1], &c[high]);
-    if(c[i+1].GetDistancia() == c[high].GetDistancia()){
-            if(c[i+1].GetPopulacao()<c[high].GetPopulacao()){
-                swap(&c[i+1],&c[high]);
-            }
-    }  
-    return (i + 1);  
-}  
-  
-/* The main function that implements QuickSort  
-arr[] --> Array to be sorted,  
-low --> Starting index,  
-high --> Ending index */
-void quickSort(vector<Civilizacao>&c, int low, int high)  
-{  
-    if (low < high)  
-    {  
-        /* pi is partitioning index, arr[p] is now  
-        at right place */
-        int pi = partition(c, low, high);  
-  
-        // Separately sort elements before  
-        // partition and after partition  
-        quickSort(c, low, pi - 1);  
-        quickSort(c, pi + 1, high);  
-    }  
-}  
-  
+    return (i + 1);
+}
+
+/*low -->  index inicial,
+high --> index final */
+void quickSort(vector<Civilizacao>&c, int low, int high) {
+    if (low < high) {
+        /* pi é um index particional */
+        int pi = partition(c, low, high);
+
+        // chamando o quickSort recursivamente
+        // partição(partition) depois de partição
+        quickSort(c, low, pi - 1);
+        quickSort(c, pi + 1, high);
+    }
+}

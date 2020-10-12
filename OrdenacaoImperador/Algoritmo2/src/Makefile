@@ -1,5 +1,5 @@
 # Emily Oliveira Sena
-#TP1 - Estrututa de Dados
+#TP2 - Estrututa de Dados
 
 CC=g++ # compilador
 CFLAGS=-Wall -Wextra
